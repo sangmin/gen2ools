@@ -1,0 +1,87 @@
+<binding direction="output">
+
+<mapping name="binding" class="com.eucalyptus.gen2ools.JibxBinding">
+  <value name="name" field="_name" style="attribute" usage="optional"/>
+  <value name="xmlns:tns" field="_namespace" style="attribute" usage="optional"/>
+  <value name="force-classes" field="_force_classes" style="attribute" usage="optional"/>
+  <value name="add-constructors" field="_add_constructors" style="attribute" usage="optional"/>
+  <value name="package" field="_package" style="attribute" usage="optional"/>
+  <collection field="_namespaceList" item-type="com.eucalyptus.gen2ools.JibxNamespace"/>
+  <collection field="_mappingList" item-type="com.eucalyptus.gen2ools.JibxMapping"/>
+</mapping>
+
+<mapping name="namespace" class="com.eucalyptus.gen2ools.JibxNamespace">
+  <value name="uri" field="uri" style="attribute" usage="optional"/>
+  <value name="prefix" field="prefix" style="attribute" usage="optional"/>
+  <value name="default" field="_default" style="attribute" usage="optional"/>
+</mapping>
+
+<mapping name="mapping" class="com.eucalyptus.gen2ools.JibxMapping"><!-- post-set="postSet" pre-get="preGet" -->
+  
+  <value name="name" field="name" style="attribute" usage="optional"/>
+  <value name="class" field="className" style="attribute" usage="optional"/>
+  <value name="label" field="_label" style="attribute" usage="optional"/>
+  <value name="using" field="_using" style="attribute" usage="optional"/>
+  <value name="ordered" field="_ordered" style="attribute" usage="optional"/>
+  <value name="abstract" field="_abstract" style="attribute" usage="optional"/>
+  <value name="ns" field="ns" style="attribute" usage="optional"/>
+  <value name="extends" field="_extends" style="attribute" usage="optional"/>
+  
+  <collection field="namespaces" item-type="com.eucalyptus.gen2ools.JibxNamespace"/>
+
+  <collection field="choiceList" ordered="false"><!-- JibxChoice -->
+    <structure type="com.eucalyptus.gen2ools.JibxValue" usage="optional"/>
+    <structure type="com.eucalyptus.gen2ools.JibxStructure" usage="optional"/>
+    <structure type="com.eucalyptus.gen2ools.JibxCollection" usage="optional"/>
+  </collection>
+</mapping>
+
+<mapping name="value" class="com.eucalyptus.gen2ools.JibxValue">
+  <value name="ident" field="_ident" style="attribute" usage="optional"/>
+  <value name="name" field="name" style="attribute" usage="optional"/>
+  <value name="ns" field="ns" style="attribute" usage="optional"/>
+  <value name="type" field="_type" style="attribute" usage="optional"/>
+  <value name="field" field="field" style="attribute" usage="optional"/>
+  <value name="usage" field="_usage" style="attribute" usage="optional"/>
+  <value name="style" field="_style" style="attribute" usage="optional" default="element"/>
+
+  <value name="default" field="_default" style="attribute" usage="optional"/>
+  <value name="serializer" field="_serializer" style="attribute" usage="optional"/>
+  <value name="deserializer" field="_deserializer" style="attribute" usage="optional"/>
+</mapping>
+
+<mapping name="structure" class="com.eucalyptus.gen2ools.JibxStructure">
+  <value name="name" field="name" style="attribute" usage="optional"/>
+  <value name="ns" field="ns" style="attribute" usage="optional"/>
+  <value name="field" field="field" style="attribute" usage="optional"/>
+  <value name="usage" field="_usage" style="attribute" usage="optional"/>
+  <value name="label" field="_label" style="attribute" usage="optional"/>
+  <value name="ordered" field="_ordered" style="attribute" usage="optional"/>
+
+  <value name="map-as" field="_mapAs" style="attribute" usage="optional"/>
+  <value name="type" field="_type" style="attribute" usage="optional"/>
+  <value name="using" field="_using" style="attribute" usage="optional"/>
+  
+  <collection field="choiceList" ordered="false">
+    <structure type="com.eucalyptus.gen2ools.JibxValue" usage="optional"/>
+    <structure type="com.eucalyptus.gen2ools.JibxStructure" usage="optional"/>
+    <structure type="com.eucalyptus.gen2ools.JibxCollection" usage="optional"/>
+  </collection>
+</mapping>
+
+<mapping name="collection" class="com.eucalyptus.gen2ools.JibxCollection">
+  <value name="name" field="name" style="attribute" usage="optional"/>
+  <value name="ns" field="ns" style="attribute" usage="optional"/>
+  <value name="field" field="field" style="attribute" usage="optional"/>
+  <value name="label" field="_label" style="attribute" usage="optional"/>
+  <value name="using" field="_using" style="attribute" usage="optional"/>
+  <value name="ordered" field="_ordered" style="attribute" usage="optional"/>
+  
+  <collection field="choiceList" ordered="false">
+    <structure type="com.eucalyptus.gen2ools.JibxValue" usage="optional"/>
+    <structure type="com.eucalyptus.gen2ools.JibxStructure" usage="optional"/>
+    <structure type="com.eucalyptus.gen2ools.JibxCollection" usage="optional"/>
+  </collection>
+</mapping>
+
+</binding>

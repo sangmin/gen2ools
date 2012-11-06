@@ -1,0 +1,37 @@
+#include("templates/header-java.inc.txt")
+package ${package-name}.ws;
+
+import org.jboss.netty.channel.ChannelHandlerContext;
+import org.jboss.netty.channel.MessageEvent;
+import ${package-name}.${service-name}ErrorResponseType;
+import com.eucalyptus.http.MappingHttpResponse;
+import com.eucalyptus.ws.protocol.BaseQueryBinding;
+import com.eucalyptus.ws.protocol.OperationParameter;
+
+/**
+ * @author ${author-name} <${author-email}>
+ */
+public class ${service-name}QueryBinding extends BaseQueryBinding<OperationParameter> {
+
+  static final String ${service-uname}_NAMESPACE_PATTERN = "https://???.amazonaws.com/doc/%s/";
+  static final String ${service-uname}_DEFAULT_VERSION = "2011-06-15";
+  static final String ${service-uname}_DEFAULT_NAMESPACE = String.format( ${service-uname}_NAMESPACE_PATTERN, ${service-uname}_DEFAULT_VERSION );
+
+  @Override
+  public void outgoingMessage( final ChannelHandlerContext ctx,
+                               final MessageEvent event ) throws Exception {
+    if ( event.getMessage( ) instanceof MappingHttpResponse &&
+        ( ( MappingHttpResponse ) event.getMessage( ) ).getMessage( ) instanceof ${service-name}ErrorResponseType) {
+      final MappingHttpResponse httpResponse = ( MappingHttpResponse )event.getMessage( );
+      final ${service-name}ErrorResponseType errorResponse = (${service-name}ErrorResponseType) httpResponse.getMessage( );
+      httpResponse.setStatus( errorResponse.getHttpStatus( ) );
+    }
+
+    super.outgoingMessage( ctx, event );
+  }
+
+  public ${service-name}QueryBinding() {
+    super( ${service-uname}_NAMESPACE_PATTERN, ${service-uname}_DEFAULT_VERSION, OperationParameter.Action );
+  }
+
+}

@@ -1,0 +1,82 @@
+#include("templates/header-java.inc.txt")
+package ${package-name}.ws;
+
+import org.apache.log4j.Logger;
+import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import org.mule.api.MessagingException;
+import org.mule.message.ExceptionMessage;
+import ${package-name}.${service-name}ErrorResponseType;
+import ${package-name}.${service-name}ErrorType;
+import ${package-name}.${service-name}Exception;
+import com.eucalyptus.binding.BindingManager;
+import com.eucalyptus.context.Contexts;
+import com.eucalyptus.records.EventRecord;
+import com.eucalyptus.records.EventType;
+import com.eucalyptus.util.EucalyptusCloudException;
+import com.eucalyptus.util.LogUtil;
+import edu.ucsb.eucalyptus.msgs.BaseMessage;
+import edu.ucsb.eucalyptus.msgs.EucalyptusErrorMessageType;
+
+/**
+ * @author ${author-name} <${author-email}>
+ */
+public class ${service-name}ErrorHandler {
+  private static final Logger LOG = Logger.getLogger( ${service-name}ErrorHandler.class );
+  private static final String INTERNAL_FAILURE = "InternalFailure";
+
+  @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+  public void handle( final ExceptionMessage exMsg ) {
+    EventRecord.here( ${service-name}ErrorHandler.class, EventType.MSG_REPLY, exMsg.getPayload( ).getClass( ).getSimpleName( ) ).debug();
+    LOG.trace( "Caught exception while servicing: " + exMsg.getPayload( ) );
+    final Throwable exception = exMsg.getException( );
+    if ( exception instanceof MessagingException && exception.getCause( ) instanceof EucalyptusCloudException ) {
+      try {
+        final EucalyptusCloudException cloudException = (EucalyptusCloudException) exception.getCause( );
+        final BaseMessage payload = parsePayload( ( ( MessagingException ) exception ).getUmoMessage( ).getPayload( ) );
+        final ${service-name}ErrorResponseType errorResp = new ${service-name}ErrorResponseType( );
+        final HttpResponseStatus status;
+        final String code;
+        if ( cloudException instanceof ${service-name}Exception) {
+          final ${service-name}Exception exception = (${service-name}Exception) cloudException;
+          status = exception.getStatus();
+          code = exception.getError();
+        } else {
+          status = HttpResponseStatus.INTERNAL_SERVER_ERROR;
+          code = INTERNAL_FAILURE;
+        }
+        errorResp.setHttpStatus( status );
+        errorResp.setCorrelationId( payload.getCorrelationId( ) );
+        errorResp.setRequestId( payload.getCorrelationId( ) );
+        final ${service-name}ErrorType error = new ${service-name}ErrorType( );
+        error.setType( "Receiver" );
+        error.setCode( code );
+        error.setMessage( cloudException.getMessage() );
+        errorResp.getErrors().add( error );
+        Contexts.response( errorResp );
+      } catch ( final PayloadParseException e ) {
+        LOG.error( "Failed to parse payload ", e.getCause() );
+      }
+    } else {
+      LOG.error( "Unable to handle exception", exception );
+    }
+  }
+
+  private static BaseMessage parsePayload( final Object payload ) throws PayloadParseException {
+    if ( payload instanceof BaseMessage ) {
+      return ( BaseMessage ) payload;
+    } else if ( payload instanceof String ) {
+      try {
+        return ( BaseMessage ) BindingManager.getBinding( BindingManager.sanitizeNamespace( ${service-name}QueryBinding.${service-uname}_DEFAULT_NAMESPACE ) ).fromOM( ( String ) payload );
+      } catch ( Exception e ) {
+        throw new PayloadParseException( e );
+      }
+    }
+    return new EucalyptusErrorMessageType( "${service-name}ErrorHandler", LogUtil.dumpObject( payload ) );
+  }
+
+  private static final class PayloadParseException extends Exception {
+    public PayloadParseException( final Throwable cause ) {
+      super(cause);
+    }
+  }
+}

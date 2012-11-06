@@ -1,0 +1,25 @@
+#include("templates/header-java.inc.txt")
+package ${package-name}.ws;
+
+import org.jboss.netty.channel.ChannelPipeline;
+import com.eucalyptus.component.ComponentId.ComponentPart;
+import com.eucalyptus.component.id.${service-name};
+import com.eucalyptus.ws.server.QueryPipeline;
+
+/**
+ * @author ${author-name} <${author-email}>
+ */
+@ComponentPart(${service-name}.class)
+public class ${service-name}QueryPipeline extends QueryPipeline {
+
+  public ${service-name}QueryPipeline( ) {
+    super("${service-lname}-query-pipeline", "/services/${service-name}", false);
+  }
+
+  @Override
+  public ChannelPipeline addHandlers( final ChannelPipeline pipeline ) {
+    super.addHandlers( pipeline );
+    pipeline.addLast( "${service-lname}-query-binding", new ${service-name}QueryBinding() );
+    return pipeline;
+  }
+}

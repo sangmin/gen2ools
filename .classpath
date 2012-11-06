@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main"/>
+	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/avalon-logkit-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/bcel.jar"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/groovy-all-1.6.7.jar"/>
+	<classpathentry kind="lib" path="lib/jaxmejs.jar"/>
+	<classpathentry kind="lib" path="lib/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-bind.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-extras.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-run.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-schema.jar"/>
+	<classpathentry kind="lib" path="lib/jibx-tools.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
+	<classpathentry kind="lib" path="lib/maven-ant-tasks-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="lib/servletapi-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/velocity-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/werken-xpath-0.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/xmlpull_1_1_4.jar"/>
+	<classpathentry kind="lib" path="lib/xpp3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

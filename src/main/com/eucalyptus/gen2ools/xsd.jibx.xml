@@ -1,0 +1,190 @@
+<binding>
+
+  <mapping class="com.eucalyptus.gen2ools.WsdlMessage" abstract="true">
+    <value name="name" field="name" style="attribute" />
+    <structure name="part">
+      <value name="element" field="element" style="attribute" />
+    </structure>
+  </mapping>
+  <mapping class="com.eucalyptus.gen2ools.WsdlOperation" abstract="true">
+    <value name="name" field="name" style="attribute" />
+    <structure name="input">
+      <value name="message" field="input" style="attribute" />
+    </structure>
+    <structure name="output">
+      <value name="message" field="output" style="attribute" />
+    </structure>
+  </mapping>
+  <mapping name="definitions" class="com.eucalyptus.gen2ools.WsdlDocument">
+    <structure name="types">
+      <structure name="schema" field="schema" type="com.eucalyptus.gen2ools.XsdSchema" />
+    </structure>
+    <collection field="messages" ordered="false">
+      <structure name="message" type="com.eucalyptus.gen2ools.WsdlMessage" />
+    </collection>
+    <structure name="portType">
+      <collection field="operations" ordered="false">
+        <structure name="operation" type="com.eucalyptus.gen2ools.WsdlOperation" />
+      </collection>
+    </structure>
+    <structure name="binding" usage="optional">
+      <structure name="binding" usage="optional"/>
+      <collection field="dummy" ordered="false" usage="optional">
+        <structure name="operation" usage="optional">
+          <structure name="operation" usage="optional"/>
+          <structure name="input" usage="optional">
+            <structure name="body" usage="optional"/>
+          </structure>
+          <structure name="output" usage="optional">
+            <structure name="body" usage="optional"/>
+          </structure>
+        </structure>
+      </collection>
+
+    </structure>
+
+    <structure name="service" usage="optional">
+      <structure name="port" usage="optional">
+        <structure name="address" usage="optional">
+        </structure>
+      </structure>
+    </structure>
+  </mapping>
+  <mapping class="com.eucalyptus.gen2ools.XsdSchema" abstract="true">
+    <collection field="includes" ordered="false"><!-- usage="optional", will through an binding exception -->
+      <structure type="com.eucalyptus.gen2ools.XsdInclude" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdImport" usage="optional" />
+    </collection>
+    <!-- an <xs:choice/> can be mapped like so -->
+    <collection field="structures" ordered="false">
+      <structure type="com.eucalyptus.gen2ools.XsdComplexType" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdSimpleType" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdAttribute" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdElement" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdAttributeGroup" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdGroup" usage="optional" />
+    </collection>
+  </mapping>
+
+  <mapping name="include" class="com.eucalyptus.gen2ools.XsdInclude">
+    <value name="schemaLocation" field="schemaLocation" style="attribute" />
+  </mapping>
+
+  <mapping name="import" class="com.eucalyptus.gen2ools.XsdImport">
+    <value name="namespace" field="namespace" style="attribute" />
+    <value name="schemaLocation" field="schemaLocation" style="attribute" usage="optional" />
+  </mapping>
+
+  <mapping name="attribute" class="com.eucalyptus.gen2ools.XsdAttribute">
+    <value name="ref" field="ref" style="attribute" usage="optional" />
+    <!-- 2004-04-01 optional in case it is a ref -->
+    <value name="name" field="name" style="attribute" usage="optional" />
+    <!-- A simpleType element can be used instead of a type attribute. -->
+    <value name="type" field="type" style="attribute" usage="optional" />
+    <value name="use" field="use" style="attribute" usage="optional" default="optional" />
+    <structure field="simpleType" type="com.eucalyptus.gen2ools.XsdSimpleType" usage="optional" />
+  </mapping>
+
+  <mapping name="element" class="com.eucalyptus.gen2ools.XsdElement">
+    <value name="ref" field="ref" style="attribute" usage="optional" />
+    <value name="name" field="name" style="attribute" usage="optional" />
+    <value name="type" field="type" style="attribute" usage="optional" />
+    <value name="minOccurs" field="minOccurs" style="attribute" usage="optional" default="1" />
+    <value name="maxOccurs" field="maxOccurs" style="attribute" usage="optional" default="1" />
+    <value name="use" field="use" style="attribute" usage="optional" />
+    <structure field="complexType" type="com.eucalyptus.gen2ools.XsdComplexType" usage="optional" />
+    <structure field="simpleType" type="com.eucalyptus.gen2ools.XsdSimpleType" usage="optional" />
+  </mapping>
+
+  <mapping name="attributeGroup" class="com.eucalyptus.gen2ools.XsdAttributeGroup">
+    <value name="ref" field="ref" style="attribute" usage="optional" />
+    <value name="name" field="name" style="attribute" usage="optional" />
+    <!--<collection field="attributes" item-type="com.eucalyptus.gen2ools.XsdAttribute"/> -->
+    <collection field="structures" ordered="false">
+      <structure type="com.eucalyptus.gen2ools.XsdAttribute" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdAttributeGroup" usage="optional" />
+    </collection>
+  </mapping>
+
+  <mapping name="choice" class="com.eucalyptus.gen2ools.XsdChoice">
+    <value name="minOccurs" field="minOccurs" style="attribute" usage="optional" default="1" />
+    <value name="maxOccurs" field="maxOccurs" style="attribute" usage="optional" default="1" />
+    <!--<collection field="elements" item-type="com.eucalyptus.gen2ools.XsdElement"/> -->
+    <collection field="structures" ordered="false">
+      <structure type="com.eucalyptus.gen2ools.XsdElement" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdGroup" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdSequence" usage="optional" /><!-- 2004-08-13 -->
+      <structure type="com.eucalyptus.gen2ools.XsdChoice" usage="optional" /><!-- 2004-08-14 -->
+    </collection>
+  </mapping>
+
+
+  <mapping name="simpleType" class="com.eucalyptus.gen2ools.XsdSimpleType">
+    <value name="name" field="name" style="attribute" usage="optional" />
+    <value name="base" field="base" style="attribute" usage="optional" />
+    <structure field="restriction" type="com.eucalyptus.gen2ools.XsdRestriction" usage="optional" />
+  </mapping>
+
+  <mapping name="complexType" class="com.eucalyptus.gen2ools.XsdComplexType">
+    <value name="name" field="name" style="attribute" usage="optional" />
+    <collection field="structures" ordered="false">
+      <structure type="com.eucalyptus.gen2ools.XsdSequence" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdChoice" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdAttribute" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdAttributeGroup" usage="optional" />
+    </collection>
+
+    <!-- these would be just by themselves -->
+    <!--<structure field="simpleContent" type="com.eucalyptus.gen2ools.XsdSimpleContent" usage="optional"/> -->
+    <!--<structure field="restriction" type="com.eucalyptus.gen2ools.XsdRestriction" usage="optional"/> -->
+
+    <!-- only complexType extension is supported -->
+    <!--<structure field="complexContent" type="com.eucalyptus.gen2ools.XsComplexContent" usage="optional"/> -->
+
+    <!--<value name="base" field="base" style="attribute" usage="optional"/> -->
+    <value name="simpleContentBase" field="simpleContentBase" style="attribute" usage="optional" />
+    <value name="complexContentBase" field="complexContentBase" style="attribute" usage="optional" />
+  </mapping>
+
+  <mapping name="sequence" class="com.eucalyptus.gen2ools.XsdSequence">
+    <collection field="structures" ordered="false">
+      <structure type="com.eucalyptus.gen2ools.XsdElement" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdGroup" usage="optional" /><!-- ref -->
+      <structure type="com.eucalyptus.gen2ools.XsdSequence" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdChoice" usage="optional" />
+    </collection>
+  </mapping>
+
+  <!-- new 2004-04-02 -->
+  <mapping name="group" class="com.eucalyptus.gen2ools.XsdGroup">
+    <value name="ref" field="ref" style="attribute" usage="optional" />
+    <value name="name" field="name" style="attribute" usage="optional" />
+    <collection field="structures" ordered="false">
+      <structure type="com.eucalyptus.gen2ools.XsdSequence" usage="optional" />
+      <structure type="com.eucalyptus.gen2ools.XsdChoice" usage="optional" /><!-- 2004-08-14 -->
+      <structure type="com.eucalyptus.gen2ools.XsdGroup" usage="optional" />
+    </collection>
+  </mapping>
+
+  <mapping name="simpleContent" class="com.eucalyptus.gen2ools.XsdSimpleContent">
+    <structure name="extension">
+      <!--<value name="base" field="base" style="attribute"/> -->
+      <structure field="extension" type="com.eucalyptus.gen2ools.XsdExtension" usage="required" />
+      <collection field="attributes" item-type="com.eucalyptus.gen2ools.XsdAttribute" />
+    </structure>
+  </mapping>
+
+
+
+  <mapping name="restriction" class="com.eucalyptus.gen2ools.XsdRestriction">
+    <value name="base" field="base" style="attribute" />
+    <!-- filter facets before binding to xsd: e.g. maxLength, pattern -->
+    <collection field="attributes" item-type="com.eucalyptus.gen2ools.XsdAttribute" />
+  </mapping>
+
+  <mapping name="extension" class="com.eucalyptus.gen2ools.XsdExtension">
+    <value name="base" field="base" style="attribute" />
+    <collection field="attributes" item-type="com.eucalyptus.gen2ools.XsdAttribute" />
+  </mapping>
+
+</binding>

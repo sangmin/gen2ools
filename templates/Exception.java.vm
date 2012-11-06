@@ -1,0 +1,31 @@
+#include("templates/header-java.inc.txt")
+package ${package-name};
+
+import org.jboss.netty.handler.codec.http.HttpResponseStatus;
+import com.eucalyptus.util.EucalyptusCloudException;
+
+/**
+ * @author ${author-name} <${author-email}>
+ */
+public class ${service-name}Exception extends EucalyptusCloudException {
+
+  private final HttpResponseStatus status;
+  private final String error;
+
+  public ${service-name}Exception(
+                          final HttpResponseStatus status,
+                          final String error,
+                          final String message ) {
+    super( message );
+    this.status = status;
+    this.error = error;
+  }
+
+  public HttpResponseStatus getStatus() {
+    return status;
+  }
+
+  public String getError() {
+    return error;
+  }
+}

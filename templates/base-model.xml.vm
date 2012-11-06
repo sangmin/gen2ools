@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+#parse( "templates/header-xml.inc.txt" )
+<mule xmlns="http://www.mulesource.org/schema/mule/core/2.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:vm="http://www.mulesource.org/schema/mule/vm/2.0" xmlns:euca="http://www.eucalyptus.com/schema/cloud/1.6"
+      xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.mulesource.org/schema/mule/core/2.0 http://www.mulesource.org/schema/mule/core/2.0/mule.xsd
+       http://www.mulesource.org/schema/mule/vm/2.0 http://www.mulesource.org/schema/mule/vm/2.0/mule-vm.xsd
+       http://www.eucalyptus.com/schema/cloud/1.6 http://www.eucalyptus.com/schema/cloud/1.6/euca.xsd">
+
+    <euca:endpoint name="${service-name}ControllerWS"
+                   connector-ref="eucaws"
+                   address="http://127.0.0.1:8773/services/${service-name}"/>
+    <euca:endpoint name="${service-name}InternalWS"
+                   connector-ref="eucaws"
+                   address="http://127.0.0.1:8773/internal/${service-name}Internal"
+                   synchronous="true"/>
+
+    <endpoint name="${service-name}WS" address="vm://${service-name}" synchronous="false"/>
+    <endpoint name="${service-name}InternalVM" address="vm://${service-name}Internal" synchronous="true"/>
+    <endpoint name="${service-name}ErrorQueueWS" address="vm://${service-name}ErrorQueue" synchronous="false"/>
+    <model name="${service-lname}">
+
+        <default-service-exception-strategy>
+            <outbound-endpoint ref="${service-name}ErrorQueueWS" />
+        </default-service-exception-strategy>
+
+        <service name="${service-name}RequestQueue">
+            <inbound>
+                <vm:inbound-endpoint ref="${service-name}RequestQueueEndpoint" />
+            </inbound>
+            <bridge-component />
+            <outbound>
+                <filtering-router>
+                    <outbound-endpoint ref="${service-name}WS" />
+                    <payload-type-filter expectedType="${package-name}.${service-name}Message" />
+                </filtering-router>
+            </outbound>
+        </service>
+
+        <service name="${service-name}">
+            <inbound>
+                <inbound-endpoint ref="${service-name}WS" />
+            </inbound>
+            <component class="${service-class}" />
+            <outbound>
+                <filtering-router>
+                    <outbound-endpoint ref="ReplyQueueEndpoint" />
+                    <payload-type-filter expectedType="${package-name}.${service-name}Message" />
+                </filtering-router>
+            </outbound>
+        </service>
+
+        <service name="${service-name}ErrorQueue">
+            <inbound>
+                <inbound-endpoint ref="${service-name}ErrorQueueWS" />
+            </inbound>
+            <component class="${package-name}.ws.${service-name}ErrorHandler" />
+        </service>
+
+    </model>
+    <model name="${service-lname}-internal">
+        <service name="${service-name}Internal">
+            <inbound>
+                <inbound-endpoint ref="${service-name}InternalWS" />
+                <inbound-endpoint ref="${service-name}InternalVM" />
+            </inbound>
+            <component class="${service-class}" />
+        </service>
+    </model>
+
+</mule>

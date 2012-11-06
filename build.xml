@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+
+<project basedir="." default="jar">
+
+	<!-- JiBX binding compiler task definition -->
+	<property environment="env" />
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<taskdef name="bind" classname="org.jibx.binding.ant.CompileTask" classpathref="classpath" />
+
+	<!-- compile the class files -->
+	<target name="compile">
+		<delete quiet="true" dir="${basedir}/classes" />
+		<mkdir dir="${basedir}/classes" />
+		<javac srcdir="${basedir}/src/main" destdir="${basedir}/classes" excludes="org/jibx/xsd2jibx/GeneratorAntTask.java" debug="true" deprecation="on" classpathref="classpath" />
+		<copy todir="${basedir}/classes/com/eucalyptus/gen2ools">
+			<fileset dir="${basedir}/src/main/com/eucalyptus/gen2ools" includes="**/*.xsl" />
+		</copy>
+	</target>
+
+	<!-- bind the class files -->
+	<target name="bind" depends="compile">
+		<echo message="Running binding compiler..." />
+		<bind verbose="true" load="true">
+			<bindingfileset dir="${basedir}/src/main/com/eucalyptus/gen2ools">
+				<include name="xsd.jibx.xml" />
+				<include name="jibx.jibx.xml" />
+			</bindingfileset>
+			<classpathset dir="${basedir}/classes" />
+		</bind>
+
+	</target>
+
+	<!-- Build the jar files for the distribution -->
+	<target name="jar" depends="bind">
+		<delete file="gen2ools.jar" quiet="true" />
+		<jar jarfile="gen2ools.jar" basedir="${basedir}/classes">
+			<manifest>
+				<attribute name="Main-Class" value="com/eucalyptus/gen2ools/Generate" />
+			</manifest>
+			<zipfileset excludes="META-INF/*.SF" src="lib/antlr-2.7.5.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/avalon-logkit-2.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/bcel.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/commons-collections-3.2.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/commons-lang-2.4.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/commons-logging-1.1.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/groovy-all-1.6.7.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/jaxmejs.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/jdom-1.0.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/jibx-bind.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/jibx-extras.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/jibx-run.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/jibx-schema.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/jibx-tools.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/log4j-1.2.12.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/maven-ant-tasks-2.0.9.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/oro-2.0.8.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/servletapi-2.3.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/velocity-1.7.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/werken-xpath-0.9.4.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/xmlpull_1_1_4.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/xpp3.jar" />
+			<fileset file="${basedir}/log4j.properties"/>
+		</jar>
+		<delete quiet="true" dir="${basedir}/classes" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${basedir}/classes" />
+	</target>
+
+</project>
