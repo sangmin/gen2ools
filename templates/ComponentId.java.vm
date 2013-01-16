@@ -1,0 +1,11 @@
+#include("templates/header-java.inc.txt")
+package ${package-name};
+
+import com.eucalyptus.component.ComponentId;
+
+/**
+ * @author ${author-name} <${author-email}>
+ */
+public class ${service-name} extends ComponentId {
+  
+}

@@ -3,8 +3,8 @@ package ${package-name}.ws;
 
 import org.jboss.netty.channel.ChannelPipeline;
 import com.eucalyptus.component.ComponentId.ComponentPart;
-import com.eucalyptus.component.id.${service-name};
 import com.eucalyptus.ws.server.QueryPipeline;
+import ${package-name}.${service-name};
 
 /**
  * @author ${author-name} <${author-email}>

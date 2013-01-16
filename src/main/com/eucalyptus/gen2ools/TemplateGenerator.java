@@ -120,6 +120,7 @@ public class TemplateGenerator {
       put( "templates/base-model.xml.vm", new File( config.getServiceOutputBaseDir( ) + "/src/main/resources/" + serviceLname + "-model.xml"  ) );
       put( "templates/build.xml.vm", new File( config.getServiceOutputBaseDir( ) + "/build.xml"  ) );
       put( "templates/build-common.xml.vm", new File( config.getCommonOutputBaseDir( ) + "/build.xml"  ) );
+      put( "templates/ComponentId.java.vm", new File( config.getCommonOutputDir( ) + "/" + config.getTargetPackage( ).replaceAll( "\\.", File.separator ), serviceName + ".java"  ) );
       put( "templates/ErrorHandler.java.vm", new File( config.getServiceOutputBaseDir( ) + "/src/main/java/" + config.getTargetPackage( ).replaceAll( "\\.", File.separator ) + "/ws", serviceName + "ErrorHandler.java"  ) );
       put( "templates/QueryBinding.java.vm", new File( config.getServiceOutputBaseDir( ) + "/src/main/java/" + config.getTargetPackage( ).replaceAll( "\\.", File.separator ) + "/ws", serviceName + "QueryBinding.java"  ) );
       put( "templates/QueryPipeline.java.vm", new File( config.getServiceOutputBaseDir( ) + "/src/main/java/" + config.getTargetPackage( ).replaceAll( "\\.", File.separator ) + "/ws", serviceName + "QueryPipeline.java"  ) );
